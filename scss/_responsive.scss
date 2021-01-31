@@ -1,0 +1,93 @@
+@include tablet {
+    header {
+        background: url(../images/bg-header-desktop.svg) top left no-repeat $pri-desaturated-dark-cyan;
+        background-size: cover;
+        padding: 2.5rem 8rem;
+    }
+
+    main {
+        padding: 9rem 8rem 1rem;
+        margin: 0;
+
+        .card {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            height: fit-content;
+            padding: 3.5rem 2.5rem;
+            margin-bottom: 5rem;
+
+            &__profile {
+
+                &__img {
+                    width: 60px;
+                    height: 60px;
+                    top: -3rem;
+                }
+
+                &__hr {
+                    display: none;
+                }
+            }
+
+            &__competences {
+                height: fit-content;
+    
+                &--role, &--level, &--languages, &--tools {
+                    margin: 0 0 0 1.5rem;
+                }
+            }
+        }
+    }
+}
+
+@include laptop {
+
+    header {
+        padding: 2.5rem 16.5rem;
+    }
+
+    main {
+        padding: 7.5rem 16.5rem 3rem;
+        margin: 0;
+        
+        .card {
+            padding: 3rem 4rem;
+            flex-direction: row;
+            align-items: center;
+            height: fit-content;
+            margin-bottom: 2.5rem;
+
+            &__profile {
+                display: flex;
+                align-items: center;
+
+                &__img {
+                    width: 88px;
+                    height: 88px;
+                    position: unset;
+                    margin-right: 2.5rem;
+                }
+        
+                &__info {
+        
+                    &--company{
+                        font-size: 1.4rem;
+                    }
+        
+                    &--position {
+                        font-size: 1.8rem;
+                    }
+        
+                    &--postedAt, &--contract, &--location {
+                        font-size: 1.4rem;
+                    }
+        
+                    &--dot{
+                        margin: 0 1.8rem;
+                    }
+                }
+            }
+        }
+    }
+}

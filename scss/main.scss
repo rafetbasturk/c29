@@ -1,0 +1,215 @@
+@import "config";
+
+html {
+    font-size: 10px;
+}
+
+body {
+    font-family: 'Spartan', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    max-width: 1440px;
+    margin: auto;
+    background: $bg-l-grayish-cyan;
+}
+
+header {
+    background: url(../images/bg-header-mobile.svg) top left no-repeat $pri-desaturated-dark-cyan;
+    background-size: cover;
+    width: 100%;
+    height: 156px;
+    padding: 2.5rem;
+}
+
+.filter {
+    margin-top: 9.5rem;
+    padding: 1.2rem;
+    background: white;
+    border-radius: 5px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+
+    &__selected {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+
+        &__box {
+            margin: .8rem;
+            background: $filter-l-grayish-cyan;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        &--text {
+            display: inline-block;
+            padding: .9rem;
+            color: $pri-desaturated-dark-cyan;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        &--remove {
+            background: $pri-desaturated-dark-cyan;
+            padding: .9rem;
+            border-radius: 0 5px 5px 0;
+
+            &:hover {
+                cursor: pointer;
+                background: black;
+                transition: 1s;
+            }
+        }
+    }
+
+    &__clear {
+        margin-right: 1.2rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: $d-grayish-cyan;
+        text-decoration: none;
+
+        &:hover {
+            cursor: pointer;
+            color: $pri-desaturated-dark-cyan;
+            text-decoration: underline;
+            transform: rotateX(30deg);
+            transition: .3s;
+        }
+    }
+}
+
+main {
+    margin: 5.5rem 2.5rem 3rem;
+    
+    .card {
+        height: 260px;
+        padding: 2.5rem 2.5rem 1.5rem;
+        position: relative;
+        background: white;
+        border-radius: .6rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        margin-bottom: 4rem;
+
+        &__profile {
+
+            &__img {
+                width: 50px;
+                height: 50px;
+                position: absolute;
+                top: -2.5rem;
+            }
+    
+            &__info {
+                height: 100px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                
+                &__title {
+                    display: flex;
+                    align-items: center;
+                }
+    
+                &--company{
+                    color: $pri-desaturated-dark-cyan;
+                    font-size: 1.3rem;
+                    font-weight: 700;
+                    margin-right: 2rem;
+                }
+    
+                &--new {
+                    color: white;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    padding: .8rem .8rem .4rem;
+                    border-radius: 1.5rem;
+                    text-transform: uppercase;
+                    background: $pri-desaturated-dark-cyan;
+                    margin-right: 1rem;
+                }
+    
+                &--featured {
+                    color: white;
+                    font-size: 1.1rem;
+                    font-weight: 700;
+                    padding: .8rem .8rem .4rem;
+                    border-radius: 1.5rem;
+                    text-transform: uppercase;
+                    background: black;
+                }
+    
+                &--position {
+                    color: $v-d-grayish-cyan;
+
+                    &:hover {
+                        cursor: pointer;
+                        color: $pri-desaturated-dark-cyan;
+                    }
+                }
+    
+                &__msg {
+                    display: flex;
+                    align-items: center;
+                }
+    
+                &--postedAt, &--contract, &--location {
+                    font-size: 1.3rem;
+                    color: $d-grayish-cyan;
+                }
+    
+                &--dot{
+                    display: inline-block;
+                    margin: 0 .5rem;
+                    width: 4px;
+                    height: 4px;
+                    border-radius: 50%;
+                    background: $d-grayish-cyan;
+                }
+            }
+            
+        }
+
+        &__competences {
+            height: fit-content;
+            display: flex;
+            align-content: space-between;
+            flex-wrap: wrap;
+            align-items: center;
+
+            &--role, &--level, &--languages, &--tools {
+                display: inline-block;
+                margin: .75rem 1.5rem .75rem 0;
+                padding: 1rem .9rem;
+                background: $filter-l-grayish-cyan;
+                color: $pri-desaturated-dark-cyan;
+                font-size: 1.2rem;
+                font-weight: 700;
+                border-radius: 5px;
+
+                &:hover {
+                    cursor: pointer;
+                    background: $pri-desaturated-dark-cyan;
+                    color: white;
+                    transform: scale(.95);
+                }
+            }
+        }
+    }
+}
+
+footer {
+    text-align: center;
+    font-size: 11px;
+    margin-bottom: 2rem;
+    
+    a {
+        color: hsl(228, 45%, 44%);
+    }
+}
+
+@import "responsive";
