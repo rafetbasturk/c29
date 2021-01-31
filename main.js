@@ -162,7 +162,7 @@ $(function() {
             <img class="card__profile__img" src=${x.logo} alt="logo">
 
             <div class="card__profile__info">
-              <div id="title" class="card__profile__info__title">
+              <div class="card__profile__info__title">
                 <small class="card__profile__info--company">${x.company}</small>
               </div>
 
