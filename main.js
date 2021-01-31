@@ -196,7 +196,7 @@ $(function() {
       x.featured ? featuredText = "featured": featuredText = "";
 
       if (x.new) {
-        $(".card").eq(i).find("#title").append(
+        $(".card").eq(i).find(".card__profile__info__title").append(
           `<span class="card__profile__info--new">${newText}</span>`
         )
       };
