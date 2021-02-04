@@ -1,5 +1,5 @@
 $(function() {
-  let json = [
+  let data = [
     {
       "id": 1,
       "company": "Photosnap",
@@ -152,8 +152,6 @@ $(function() {
     }
   ];
 
-  let bodyWidth = $("body").width();
-
   function loadItems(array) {
     $.each(array, function (i, x) {
       $("main").append(
@@ -195,144 +193,119 @@ $(function() {
       x.new ? newText = "New!": newText = "";
       x.featured ? featuredText = "featured": featuredText = "";
 
-      if (x.new) {
+      (x.new) ?
         $(".card").eq(i).find(".card__profile__info__title").append(
           `<span class="card__profile__info--new">${newText}</span>`
-        )
-      };
+        ): null;
 
-      if (x.featured) {
+      (x.featured) ?
         $(".card").eq(i).css({
           "border-left": "5px solid hsl(180, 29%, 50%)",
-          "padding-left": "2rem"
-        });
+        }) &&
         $(".card").eq(i).find(".card__profile__info__title").append(
           `<span class="card__profile__info--featured">${featuredText}</span>`
-        );
-      }
-      
-      if ((x.featured) && (bodyWidth > 1300)){
-        $(".card").eq(i).css({
-          "padding-left": "3.5rem"
-        });
-      };
+        ): null;
 
       $.each(x.languages, function(index, y) {    
         $(".card").eq(i).find(".card__competences").append(
-          `<div class="card__competences--languages">${y}</div>`
-        )
+          `<div class="card__competences--languages">${y}</div>`)
       });
 
       $.each(x.tools, function(index, y) {
         $(".card").eq(i).find(".card__competences").append(
-          `<div class="card__competences--tools">${y}</div>`
-        )
+          `<div class="card__competences--tools">${y}</div>`)
       });
     });
   };
 
-  loadItems(json);
+  loadItems(data);
 
-  // filtering section starts
+  // filtering section
 
   let filters = [];
+  let filterData = data;
   let filtered = [];
+  let filterTitles = [];
 
   $("body").on("click", ".card__competences--languages, .card__competences--tools, .card__competences--role, .card__competences--level", function(e) {
     
     let text = $(e.target).text();
-
-    // let el = $(e.target);
-    // if (el.hasClass("card__competences--role")) {
-    //   filters.push({"role" : text});
-    // } else if (el.hasClass("card__competences--level")) {
-    //   filters.push({"level" : text})
-    // } else if (el.hasClass("card__competences--languages")) {
-    //   filters.push({"languages" : text})
-    // } else {
-    //   filters.push({"tools" : text})
-    // }
-
     filters.push(text);
-    
-    filters = filters.filter((v, i, a) => a.indexOf(v) === i); // removes duplicates in filters
+    filters = filters.filter((v, i, a) => a.indexOf(v) === i);
 
-    function filter (array, filterArray) {
-      array.forEach(obj => {
-        const {role, level, languages: [lan1, lan2, lan3], tools: [tool1, tool2]} = obj;
-        filterArray.every(val => {
-          role == val || level == val || (lan1 == val || lan2== val || lan3 == val) || (tool1 == val || tool2 == val) ? filtered.push(obj): null
-        });
-      });
-    }
+    $(".filter__selected").empty();
+    $.each(filters, function (index, x) {
+      $(".filter__selected").append(
+        `<span class="filter__selected__box">
+          <span class="filter__selected--text">${x}</span>
+          <img class="filter__selected--remove" src="./images/icon-remove.svg" alt="icon-remove">
+        </span>`);
+    });
 
-    filter(json, filters);
-
-    if (bodyWidth >= 900) {
-      $("main").empty().css("margin-top", "0");
-    } else {
-      $("main").empty().css("margin-top", "14rem");
-    }
-    
     $(".filter").css({
       display: "flex",
     });
 
-    $(".filter__selected").append(
-      `<span class="filter__selected__box">
-        <span class="filter__selected--text">${text}</span>
-        <img class="filter__selected--remove" src="./images/icon-remove.svg" alt="icon-remove">
-      </span>`
-    );
+    $("main").empty();
 
+    function filter(array) {
+      array.filter(obj => {
+        const {role, level, languages: [lan1, lan2, lan3], tools: [tool1, tool2]} = obj;
+        filterTitles = [role, level, lan1, lan2, lan3, tool1, tool2];
+        filterTitles = filterTitles.filter(a => a != undefined);
+  
+        filterTitles.filter(y => 
+          y.includes(text) ? filtered.push(obj): null
+        )
+      })
+    }
+
+    filter(filterData);
     loadItems(filtered);
-
+    filterData = filtered;
+    filtered = []
+    
     e.preventDefault();
   });
 
   // remove filter
 
   $("body").on("click", ".filter__selected--remove", function(e) {
-
+    let text = $(e.target).prev().text();
     $(e.target).parent().remove();
     
-    let index = filters.indexOf($(e.target).prev().text());
-    if (index > -1) {
-      filters.splice(index, 1);
+    let elementIndex = filters.indexOf($(e.target).prev().text());
+    if (elementIndex > -1) {
+      filters.splice(elementIndex, 1);
     }
+
+    function removeFilter(array) {
+      array.filter(obj => {
+        const {role, level, languages: [lan1, lan2, lan3], tools: [tool1, tool2]} = obj;
+        filterTitles = [role, level, lan1, lan2, lan3, tool1, tool2];
+        filterTitles = filterTitles.filter(a => a != undefined);
+  
+        filterTitles.filter(y => {
+          console.log(y.includes(text)) 
+        });  
+      })
+    }
+    console.log(filterData);
+    removeFilter(filterData);
+    loadItems(filtered);
+    data = filtered;
+    filtered = [];
 
     let lengthOfFilters = $(".filter__selected").children().length;
     
     if (lengthOfFilters === 0) {
-      $("header").empty();
-
-      if (bodyWidth >= 900) {
-        $("main").empty();
-      } else {
-        $("main").empty().css("margin-top", "5.5rem");
-      }
-
-      loadItems(json);
-
-      e.preventDefault();
+      location.reload();
     }
   });
 
   // clear all filters
 
   $("body").on("click", ".filter__clear", function(e) {
-    window.location.reload();
-    // e.preventDefault();
-    // $("header").empty();
-    
-    // if (bodyWidth >= 900) {
-    //   $("main").empty();
-    // } else {
-    //   $("main").empty().css("margin-top", "5.5rem");
-    // }
-
-    // filtered = [];
-    
-    // loadItems(json);
+    location.reload();
   });
 });

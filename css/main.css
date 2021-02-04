@@ -20,11 +20,14 @@ body {
 }
 
 header {
-  background: url(../images/bg-header-mobile.svg) top left no-repeat #5ba4a4;
-  background-size: cover;
+  background: url(../images/bg-header-mobile.svg) top left no-repeat, linear-gradient(to bottom, #5ba4a4 0, #5ba4a4 156px, #effafa 156px, #effafa 100%);
+  background-size: 100% 156px, 100% 100%;
   width: 100%;
-  height: 156px;
-  padding: 2.5rem;
+  min-height: 156px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  padding: 2.5rem 2.5rem 0;
 }
 
 .filter {
@@ -109,7 +112,7 @@ main {
 
 main .card {
   height: 260px;
-  padding: 2.5rem 2.5rem 1.5rem;
+  padding: 2.5rem 2.5rem 1.5rem 2rem;
   position: relative;
   background: white;
   border-radius: .6rem;
@@ -123,6 +126,7 @@ main .card {
   -ms-flex-pack: distribute;
       justify-content: space-around;
   margin-bottom: 4rem;
+  border-left: 5px solid transparent;
 }
 
 main .card__profile__img {
@@ -261,12 +265,12 @@ footer a {
 
 @media screen and (min-width: 900px) {
   header {
-    background: url(../images/bg-header-desktop.svg) top left no-repeat #5ba4a4;
-    background-size: cover;
-    padding: 2.5rem 8rem;
+    background: url(../images/bg-header-desktop.svg) top left no-repeat, linear-gradient(to bottom, #5ba4a4 0, #5ba4a4 156px, #effafa 156px, #effafa 100%);
+    background-size: 100% 156px, 100% 100%;
+    padding: 2.5rem 8rem 2rem;
   }
   main {
-    padding: 9rem 8rem 1rem;
+    padding: 5rem 8rem 1rem;
     margin: 0;
   }
   main .card {
@@ -283,7 +287,7 @@ footer a {
     height: -webkit-fit-content;
     height: -moz-fit-content;
     height: fit-content;
-    padding: 3.5rem 2.5rem;
+    padding: 3rem 2.5rem;
     margin-bottom: 5rem;
   }
   main .card__profile__img {
@@ -306,14 +310,20 @@ footer a {
 
 @media screen and (min-width: 1300px) {
   header {
-    padding: 2.5rem 16.5rem;
+    padding: 2.5rem 16.5rem 0;
+  }
+  .filter {
+    padding: 1.2rem 4rem 1.2rem 3.2rem;
+  }
+  .filter__clear {
+    margin-right: 0;
   }
   main {
-    padding: 7.5rem 16.5rem 3rem;
+    padding: 4rem 16.5rem 3rem;
     margin: 0;
   }
   main .card {
-    padding: 3rem 4rem;
+    padding: 2.5rem 4rem 2.5rem 3.5rem;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
         -ms-flex-direction: row;
