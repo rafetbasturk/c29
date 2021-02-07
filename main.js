@@ -153,27 +153,27 @@ $(function() {
   ];
 
   function loadItems(array) {
-    $.each(array, function (i, x) {
+    $.each(array, function (i, obj) {
       $("main").append(
         `<div class="card">
           <div class="card__profile">
-            <img class="card__profile__img" src=${x.logo} alt="logo">
+            <img class="card__profile__img" src=${obj.logo} alt="logo">
 
             <div class="card__profile__info">
               <div class="card__profile__info__title">
-                <small class="card__profile__info--company">${x.company}</small>
+                <small class="card__profile__info--company">${obj.company}</small>
               </div>
 
               <div class="card__profile__info__job">
-                <strong class="card__profile__info--position">${x.position}</strong>
+                <strong class="card__profile__info--position">${obj.position}</strong>
               </div>
 
               <div class="card__profile__info__msg">
-                <span class="card__profile__info--postedAt">${x.postedAt}</span>
+                <span class="card__profile__info--postedAt">${obj.postedAt}</span>
                 <span class="card__profile__info--dot"></span>
-                <span class="card__profile__info--contract">${x.contract}</span>
+                <span class="card__profile__info--contract">${obj.contract}</span>
                 <span class="card__profile__info--dot"></span>
-                <span class="card__profile__info--location">${x.location}</span>
+                <span class="card__profile__info--location">${obj.location}</span>
               </div>
             </div>
           </div>
@@ -181,8 +181,8 @@ $(function() {
           <hr class="card__hr">
 
           <div class="card__competences">
-            <div class="card__competences--role">${x.role}</div>
-            <div class="card__competences--level">${x.level}</div>
+            <div class="card__competences--role">${obj.role}</div>
+            <div class="card__competences--level">${obj.level}</div>
           </div>
         </div>`
       );
@@ -190,15 +190,15 @@ $(function() {
       let newText = "";
       let featuredText = "";
 
-      x.new ? newText = "New!": newText = "";
-      x.featured ? featuredText = "featured": featuredText = "";
+      obj.new ? newText = "New!": newText = "";
+      obj.featured ? featuredText = "featured": featuredText = "";
 
-      (x.new) ?
+      (obj.new) ?
         $(".card").eq(i).find(".card__profile__info__title").append(
           `<span class="card__profile__info--new">${newText}</span>`
         ): null;
 
-      (x.featured) ?
+      (obj.featured) ?
         $(".card").eq(i).css({
           "border-left": "5px solid hsl(180, 29%, 50%)",
         }) &&
@@ -206,12 +206,12 @@ $(function() {
           `<span class="card__profile__info--featured">${featuredText}</span>`
         ): null;
 
-      $.each(x.languages, function(index, y) {    
+      $.each(obj.languages, function(index, y) {    
         $(".card").eq(i).find(".card__competences").append(
           `<div class="card__competences--languages">${y}</div>`)
       });
 
-      $.each(x.tools, function(index, y) {
+      $.each(obj.tools, function(index, y) {
         $(".card").eq(i).find(".card__competences").append(
           `<div class="card__competences--tools">${y}</div>`)
       });
@@ -223,9 +223,20 @@ $(function() {
   // filtering section
 
   let filters = [];
-  let filterData = data;
   let filtered = [];
-  let filterTitles = [];
+  let filterSubjects = [];
+
+  function filterObjects (array, filterArray) {
+    $.each(array, function(index, obj) {
+      const {role, level, languages: [lan1, lan2, lan3], tools: [tool1, tool2]} = obj;
+      filterSubjects = [role, level, lan1, lan2, lan3, tool1, tool2].filter(a => a != undefined);
+      obj = {...obj, filters: filterSubjects};
+  
+      [obj].forEach(item => {
+        filterArray.every(v => item.filters.includes(v)) ? filtered.push(item): null;
+      });
+    });
+  };
 
   $("body").on("click", ".card__competences--languages, .card__competences--tools, .card__competences--role, .card__competences--level", function(e) {
     
@@ -233,14 +244,11 @@ $(function() {
     filters.push(text);
     filters = filters.filter((v, i, a) => a.indexOf(v) === i);
 
-    $(".filter__selected").empty();
-    $.each(filters, function (index, x) {
-      $(".filter__selected").append(
-        `<span class="filter__selected__box">
-          <span class="filter__selected--text">${x}</span>
-          <img class="filter__selected--remove" src="./images/icon-remove.svg" alt="icon-remove">
-        </span>`);
-    });
+    $(".filter__selected").append(
+      `<span class="filter__selected__box">
+        <span class="filter__selected--text">${text}</span>
+        <img class="filter__selected--remove" src="./images/icon-remove.svg" alt="icon-remove">
+      </span>`);
 
     $(".filter").css({
       display: "flex",
@@ -248,30 +256,17 @@ $(function() {
 
     $("main").empty();
 
-    function filter(array) {
-      array.filter(obj => {
-        const {role, level, languages: [lan1, lan2, lan3], tools: [tool1, tool2]} = obj;
-        filterTitles = [role, level, lan1, lan2, lan3, tool1, tool2];
-        filterTitles = filterTitles.filter(a => a != undefined);
-  
-        filterTitles.filter(y => 
-          y.includes(text) ? filtered.push(obj): null
-        )
-      })
-    }
-
-    filter(filterData);
+    filterObjects (data, filters);
     loadItems(filtered);
-    filterData = filtered;
-    filtered = []
-    
+    filtered = [];
+
     e.preventDefault();
   });
 
-  // remove filter
+  // removing filters
 
   $("body").on("click", ".filter__selected--remove", function(e) {
-    let text = $(e.target).prev().text();
+
     $(e.target).parent().remove();
     
     let elementIndex = filters.indexOf($(e.target).prev().text());
@@ -279,27 +274,19 @@ $(function() {
       filters.splice(elementIndex, 1);
     }
 
-    function removeFilter(array) {
-      array.filter(obj => {
-        const {role, level, languages: [lan1, lan2, lan3], tools: [tool1, tool2]} = obj;
-        filterTitles = [role, level, lan1, lan2, lan3, tool1, tool2];
-        filterTitles = filterTitles.filter(a => a != undefined);
-  
-        filterTitles.filter(y => {
-          console.log(y.includes(text)) 
-        });  
-      })
-    }
-    console.log(filterData);
-    removeFilter(filterData);
+    let text = $(e.target).prev().text();
+    filters = filters.filter(x => x != text);
+
+    $("main").empty();
+
+    filterObjects (data, filters);
     loadItems(filtered);
-    data = filtered;
     filtered = [];
 
     let lengthOfFilters = $(".filter__selected").children().length;
     
     if (lengthOfFilters === 0) {
-      location.reload();
+      $(".filter").css("display", "none");
     }
   });
 
